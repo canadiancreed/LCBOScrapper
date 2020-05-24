@@ -36,4 +36,4 @@ class Application:
 
         Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " complete")
 
-        print("Product and Inventory data for " + description + " complete")
+        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " complete")

@@ -6,6 +6,11 @@ from bs4 import BeautifulSoup
 from Global import Global
 
 
+###
+# All functionality for handling data on LCBO product inventory pages
+###
+
+
 class ProductInventoryPageScraper:
     current_product_inventory_data = []
 
@@ -55,6 +60,14 @@ class ProductInventoryPageScraper:
         driver.quit()
 
         return None
+
+    """
+    Writes Product Inventory Page Data to csv - this may be refactor to be placed in Global or a library file in future
+
+    :param integer file_name - Name of file to save too
+    :param integer line_number - signals if the csv headers should be written. If first line, then yes. Otherwise no.
+    :return null None
+    """
 
     def write_to_file(self, file_name, line_number):
         default_file_path = Global.get_data_directory() + "/" + file_name

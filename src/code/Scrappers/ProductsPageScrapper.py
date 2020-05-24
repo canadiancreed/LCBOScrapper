@@ -8,7 +8,20 @@ from Global import Global
 # This collects all potential product URLs for a particular category.
 ###
 
+
 class ProductsPageScraper:
+
+    ###
+    # All functionality for handling data on LCBO product pages
+    ###
+
+    """
+    This function will load the initial page for the specific category, collect the total amount of available pages,
+    then collections all product urls that exists on every page.
+
+    :param string product_category - The product category to load
+    :return list productsURL - Returns a list of product URLs
+    """
 
     def collect_products_urls(self, product_category):
 
@@ -21,7 +34,6 @@ class ProductsPageScraper:
 
         html_soup = BeautifulSoup(response.text, 'html.parser')
 
-        # probably a way to put this all on one line, but eh
         pages = html_soup.find_all('a', attrs={'data-page-number': True})
 
         # Check if pages is empty. If so, there's less then one page of data to process, and handle accordingly

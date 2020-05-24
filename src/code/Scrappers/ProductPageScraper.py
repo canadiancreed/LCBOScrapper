@@ -13,8 +13,14 @@ from Global import Global
 class ProductPageScraper:
     current_product_data = {}
 
-    # This array won't match the final DB schema, but data transformation isn't part of this functions brief.
-    # This is isolated in it's own function to organize the dict structure, as it can change at the source
+    """
+    Creates and returns the base product data dictionary
+    
+    This array won't match the final DB schema, but data transformation isn't part of this functions brief.
+    This is isolated in it's own function to organize the dict structure, as it can change at the source
+
+    :return dict product_data
+    """
 
     def populate_base_product_data_dict(self):
         product_data = {"Alcohol/Vol:": "", "Bottle Size:": "", "Made In:": "", "Description": "", "Id": "",
@@ -24,9 +30,15 @@ class ProductPageScraper:
 
         return product_data
 
+    """
+    Populates the product_data dictionary with data from the product at the specific url passed
+    
+    :param string url - The url of the product to be processed
+    :return int product_id - Returns the product_id for the specified product
+    """
+
     def get_product_data(self, url):
 
-        # Sample url
         headers = {"User-Agent": Global.url_headers()}
 
         response = requests.get(url, headers=headers)
@@ -51,6 +63,14 @@ class ProductPageScraper:
 
         return self.__get_product_id(html_soup)
 
+    """
+    Writes Product Inventory Page Data to csv - this may be refactor to be placed in Global or a library file in future
+
+    :param integer file_name - Name of file to save too
+    :param integer line_number - signals if the csv headers should be written. If first line, then yes. Otherwise no.
+    :return null None
+    """
+
     def write_to_file(self, file_name, line_number):
         default_file_path = Global.get_data_directory() + "/" + file_name
 
@@ -65,14 +85,18 @@ class ProductPageScraper:
 
         return None
 
+    """
+    Takes the data in the product details list section of the product page and processes it, returning it in a dictionary
+
+    :param object data - Passed data of the processed page
+    :return dictionary product_details - A dictionary of the product's details scrapped into a dictionary
+    """
+
     def __get_product_details_list(self, data):
         product_details = {}
 
         try:
             product_details_section = data.find('div', {'class', 'product-details-list'})
-
-            product_detail_keys = {}
-            product_detail_values = {}
 
             product_detail_keys = product_details_section.find_all('b')
             product_detail_values = product_details_section.find_all('span')
@@ -85,15 +109,29 @@ class ProductPageScraper:
 
         return product_details
 
+    """
+    Parses the product description from the product page
+
+    :param object data - Passed data of the processed page
+    :return string product_description
+    """
+
     def __get_product_description(self, data):
         product_description = None
 
         try:
             product_description = data.find('div', {'class': 'product-text-content'}).text
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         return product_description
+
+    """
+    Parses the product id from the product page
+
+    :param object data - Passed data of the processed page
+    :return int product_id
+    """
 
     def __get_product_id(self, data):
         product_id = None
@@ -105,6 +143,13 @@ class ProductPageScraper:
 
         return product_id
 
+    """
+    Parses the product image url from the product page
+
+    :param object data - Passed data of the processed page
+    :return string product_image
+    """
+
     def __get_product_image(self, data):
         product_image = None
 
@@ -114,6 +159,13 @@ class ProductPageScraper:
             pass
 
         return product_image
+
+    """
+    Parses the product keyword(s) string from the product page
+
+    :param object data - Passed data of the processed page
+    :return string product_keyword
+    """
 
     def __get_product_keyword(self, data):
         product_keyword = None
@@ -125,6 +177,13 @@ class ProductPageScraper:
 
         return product_keyword
 
+    """
+    Parses the product name from the product page
+
+    :param object data - Passed data of the processed page
+    :return string product_name
+    """
+
     def __get_product_name(self, data):
         product_name = None
 
@@ -134,6 +193,13 @@ class ProductPageScraper:
             pass
 
         return product_name
+
+    """
+    Parses the product price from the product page
+
+    :param object data - Passed data of the processed page
+    :return double product_price
+    """
 
     def __get_product_price(self, data):
         product_price = None

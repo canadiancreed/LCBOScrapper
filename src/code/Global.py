@@ -2,6 +2,9 @@ import csv
 import os
 from datetime import datetime
 
+###
+# All functionality that is application wide in scope
+###
 
 class Global:
     default_path = ""
@@ -60,19 +63,6 @@ class Global:
         with open("../resources/LCBO categories.csv", 'r') as file:
             for row in csv.reader(file):
                 product_dict.update({row[0]:row[1]})
-
-        return product_dict
-
-    @staticmethod
-    def product_dict_data_test():
-
-        product_dict = {"PREMIXED_COCKTAILS" : "premixed-cocktails-18030",
-                        "PREMIXED_COCKTAILS_CITRUS" : "premixed-cocktails-18030/citrus-18030094-1",
-                        "PREMIXED_COCKTAILS_SHOTS" : "premixed-cocktails-18030/shots",
-                        "PREMIXED_COCKTAILS_PREMIXED" : "premixed-cocktails-18030/premixed"
-                        }
-
-
 
         return product_dict
 
