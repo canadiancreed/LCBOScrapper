@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 from Global import Global
 from Scrappers.ProductInventoryPageScraper import ProductInventoryPageScraper
@@ -12,6 +13,7 @@ class Application:
     if len(sys.argv) > 1:
         category = sys.argv[1]
     else:
+        print("An argument is needed. Specify a category.")
         sys.exit(1)
 
     psps = ProductsPageScraper()
@@ -37,6 +39,11 @@ class Application:
         # Create data directory
         Global.create_data_directory(description)
 
+        # Get start time
+        start_time = datetime.now()
+        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " started @ " +
+                                 start_time.strftime("%d/%m/%Y %H:%M:%S"))
+
         # Get URLs for all product in category
         product_urls = psps.collect_products_urls(product_category)
 
@@ -50,11 +57,12 @@ class Application:
 
             pips.write_to_file("inventory.csv", idx)
 
-            Global.write_to_log_file("main.log", "Inventory and data for product " + str(idx) + " processed")
+            Global.write_to_log_file(product_category + ".log", "Inventory and data for product " + str(idx) + " processed")
 
-        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " complete")
-
-        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " complete")
+        # Get end time
+        end_time = datetime.now()
+        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " complete @ " +
+                                 end_time.strftime("%d/%m/%Y %H:%M:%S"))
 
     # We'll need this or else you'll have zombie processes
     sys.exit(0)
