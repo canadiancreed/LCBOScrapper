@@ -45,7 +45,7 @@ class Application:
                                  start_time.strftime("%d/%m/%Y %H:%M:%S"))
 
         # Get URLs for all product in category
-        product_urls = psps.collect_products_urls(product_category)
+        product_urls = psps.collect_products_urls(description, product_category)
 
         # Gets product data for specific item
         for idx, product_url in enumerate(product_urls, start=1):
@@ -57,7 +57,7 @@ class Application:
 
             pips.write_to_file("inventory.csv", idx)
 
-            Global.write_to_log_file(product_category + ".log", "Inventory and data for product " + str(idx) + " processed")
+            Global.write_to_log_file(description + ".log", "Inventory and data for product " + str(idx) + " processed")
 
         # Get end time
         end_time = datetime.now()

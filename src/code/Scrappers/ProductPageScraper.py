@@ -105,7 +105,7 @@ class ProductPageScraper:
                 product_details.update({product_detail_keys[x].text.strip(): product_detail_values[x].text.strip()})
 
         except Exception as e:
-            print(e)
+            Global.write_to_log_file("error.log", e)
 
         return product_details
 
@@ -122,7 +122,7 @@ class ProductPageScraper:
         try:
             product_description = data.find('div', {'class': 'product-text-content'}).text
         except Exception as e:
-            print(e)
+            Global.write_to_log_file("error.log", e)
 
         return product_description
 
@@ -138,8 +138,8 @@ class ProductPageScraper:
 
         try:
             product_id = data.find('input', {'id': 'pdId'}).get('value')
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_id
 
@@ -155,8 +155,8 @@ class ProductPageScraper:
 
         try:
             product_image = data.find('img', {'id': 'productMainImage'}).get('src')
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_image
 
@@ -172,8 +172,8 @@ class ProductPageScraper:
 
         try:
             product_keyword = data.find('input', {'id': 'productKeyword'}).get('value')
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_keyword
 
@@ -189,8 +189,8 @@ class ProductPageScraper:
 
         try:
             product_name = data.find('h1', {'role': 'heading'}).text
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_name
 
@@ -206,7 +206,7 @@ class ProductPageScraper:
 
         try:
             product_price = data.find('span', {'class': 'price'}).text
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_price.strip()

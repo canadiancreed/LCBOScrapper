@@ -23,7 +23,7 @@ class ProductsPageScraper:
     :return list productsURL - Returns a list of product URLs
     """
 
-    def collect_products_urls(self, product_category):
+    def collect_products_urls(self, description, product_category):
 
         productsURL = []
 
@@ -44,7 +44,7 @@ class ProductsPageScraper:
 
         # Get initial page content
 
-        Global.write_to_log_file(product_category + ".log", "Starting Page 0 of " + product_category)
+        Global.write_to_log_file(description + ".log", "Starting Page 0 of " + product_category)
 
         beverages = html_soup.find_all('div', class_='row product')
 
@@ -53,16 +53,16 @@ class ProductsPageScraper:
 
             productsURL.append(name.a['href'])
 
-        Global.write_to_log_file(product_category + ".log", "Ending Page 0 of " + product_category)
+        Global.write_to_log_file(description + ".log", "Ending Page 0 of " + product_category)
 
         # Now time to loop through the rest of the pages
         for pageValue in range(1, last_page_amount):
 
-            Global.write_to_log_file(product_category + ".log", "Starting Page " + str(pageValue) + " of " + product_category)
+            Global.write_to_log_file(description + ".log", "Starting Page " + str(pageValue) + " of " + product_category)
 
             beginIndex = pageValue * 12
 
-            url = Global.base_url() + product_category + "?pageView=grid&orderBy=5&fromPage=catalogEntryList&beginIndex=" + str(
+            url = Global.base_url() + description + "?pageView=grid&orderBy=5&fromPage=catalogEntryList&beginIndex=" + str(
                 beginIndex)
             headers = {"User-Agent": Global.url_headers()}
 
@@ -77,6 +77,6 @@ class ProductsPageScraper:
 
                 productsURL.append(name.a['href'])
 
-            Global.write_to_log_file(product_category + ".log", "Ending Page " + str(pageValue) + " of " + product_category)
+            Global.write_to_log_file(description + ".log", "Ending Page " + str(pageValue) + " of " + product_category)
 
         return productsURL

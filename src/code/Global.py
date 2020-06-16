@@ -41,7 +41,7 @@ class Global:
             try:
                 os.makedirs(path)
             except OSError as err:
-                print("Creation of the directory " + path + " failed. {0}".format(err))
+                Global.write_to_log_file("error.log", "Creation of the directory " + path + " failed. {0}".format(err))
 
         Global.default_path = path
 
@@ -49,23 +49,11 @@ class Global:
 
     @staticmethod
     def write_to_log_file(file_name, data):
-        f = open(Global.root_data_dir() + Global.current_date + "/" + file_name, "a+")
-        f.write(data + '\n')
-        f.close()
+        with open(Global.root_data_dir() + Global.current_date + "/" + file_name, "a+") as f:
+            f.write(data + '\n')
+            f.close()
 
         return None
-
-    # @staticmethod
-    # def product_dict_data():
-    #
-    #     product_dict = {}
-    #
-    #     # Load txt file with catorgies names, throw into dict
-    #     with open("../resources/LCBO data/LCBO categories.csv", 'r') as file:
-    #         for row in csv.reader(file):
-    #             product_dict.update({row[0]:row[1]})
-    #
-    #     return product_dict
 
     # Prepopulating the array prevents data from being assigned to the wrong column in the csv file.
     # Not the best way probably, but the best for now
