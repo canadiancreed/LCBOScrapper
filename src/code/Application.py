@@ -41,7 +41,7 @@ class Application:
 
         # Get start time
         start_time = datetime.now()
-        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " started @ " +
+        Global.write_to_log_file(description + ".log", "Product and Inventory data for " + description + " started @ " +
                                  start_time.strftime("%d/%m/%Y %H:%M:%S"))
 
         # Get URLs for all product in category
@@ -61,7 +61,7 @@ class Application:
 
         # Get end time
         end_time = datetime.now()
-        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " complete @ " +
+        Global.write_to_log_file(description + ".log", "Product and Inventory data for " + description + " complete @ " +
                                  end_time.strftime("%d/%m/%Y %H:%M:%S"))
 
     # We'll need this or else you'll have zombie processes
