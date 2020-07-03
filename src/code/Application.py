@@ -53,9 +53,12 @@ class Application:
 
             pps.write_to_file("product.csv", idx)
 
-            pips.get_product_inventory_data(product_id)
-
-            pips.write_to_file("inventory.csv", idx)
+            # Put this code in as we're getting errors that product_id is None
+            if product_id:
+                pips.get_product_inventory_data(product_id)
+                pips.write_to_file("inventory.csv", idx)
+            else:
+                Global.write_to_log_file("error.log", "Product ID " + str(product_id) + " is None for " + product_url)
 
             Global.write_to_log_file(description + ".log", "Inventory and data for product " + str(idx) + " processed")
 

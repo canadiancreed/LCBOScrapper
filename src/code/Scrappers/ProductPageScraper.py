@@ -209,7 +209,8 @@ class ProductPageScraper:
 
         try:
             product_price = data.find('span', {'class': 'price'}).text
+            product_price.strip()
         except Exception as e:
             Global.write_to_log_file("error.log", e)
 
-        return product_price.strip()
+        return product_price
