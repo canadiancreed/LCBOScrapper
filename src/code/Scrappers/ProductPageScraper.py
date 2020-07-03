@@ -45,7 +45,7 @@ class ProductPageScraper:
 
         html_soup = BeautifulSoup(response.text, 'html.parser')
 
-        product_details = self.__get_product_details_list(html_soup)
+        product_details = self.__get_product_details_list(html_soup, url)
 
         product_data = self.populate_base_product_data_dict()
 
@@ -92,20 +92,23 @@ class ProductPageScraper:
     :return dictionary product_details - A dictionary of the product's details scrapped into a dictionary
     """
 
-    def __get_product_details_list(self, data):
+    def __get_product_details_list(self, data, url):
         product_details = {}
 
         try:
             product_details_section = data.find('div', {'class', 'product-details-list'})
 
-            product_detail_keys = product_details_section.find_all('b')
-            product_detail_values = product_details_section.find_all('span')
+            if product_details_section:
+                product_detail_keys = product_details_section.find_all('b')
+                product_detail_values = product_details_section.find_all('span')
 
-            for x in range(0, len(product_detail_keys)):
-                product_details.update({product_detail_keys[x].text.strip(): product_detail_values[x].text.strip()})
+                for x in range(0, len(product_detail_keys)):
+                    product_details.update({product_detail_keys[x].text.strip(): product_detail_values[x].text.strip()})
+            else:
+                Global.write_to_log_file("error.log", "Product @ " + url + " contained no product details.")
 
         except Exception as e:
-            print(e)
+            Global.write_to_log_file("error.log", e)
 
         return product_details
 
@@ -122,7 +125,7 @@ class ProductPageScraper:
         try:
             product_description = data.find('div', {'class': 'product-text-content'}).text
         except Exception as e:
-            print(e)
+            Global.write_to_log_file("error.log", e)
 
         return product_description
 
@@ -138,8 +141,8 @@ class ProductPageScraper:
 
         try:
             product_id = data.find('input', {'id': 'pdId'}).get('value')
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_id
 
@@ -155,8 +158,8 @@ class ProductPageScraper:
 
         try:
             product_image = data.find('img', {'id': 'productMainImage'}).get('src')
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_image
 
@@ -172,8 +175,8 @@ class ProductPageScraper:
 
         try:
             product_keyword = data.find('input', {'id': 'productKeyword'}).get('value')
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_keyword
 
@@ -189,8 +192,8 @@ class ProductPageScraper:
 
         try:
             product_name = data.find('h1', {'role': 'heading'}).text
-        except:
-            pass
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
         return product_name
 
@@ -206,7 +209,8 @@ class ProductPageScraper:
 
         try:
             product_price = data.find('span', {'class': 'price'}).text
-        except:
-            pass
+            product_price.strip()
+        except Exception as e:
+            Global.write_to_log_file("error.log", e)
 
-        return product_price.strip()
+        return product_price

@@ -41,11 +41,11 @@ class Application:
 
         # Get start time
         start_time = datetime.now()
-        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " started @ " +
+        Global.write_to_log_file(description + ".log", "Product and Inventory data for " + description + " started @ " +
                                  start_time.strftime("%d/%m/%Y %H:%M:%S"))
 
         # Get URLs for all product in category
-        product_urls = psps.collect_products_urls(product_category)
+        product_urls = psps.collect_products_urls(description, product_category)
 
         # Gets product data for specific item
         for idx, product_url in enumerate(product_urls, start=1):
@@ -53,15 +53,18 @@ class Application:
 
             pps.write_to_file("product.csv", idx)
 
-            pips.get_product_inventory_data(product_id)
+            # Put this code in as we're getting errors that product_id is None
+            if product_id:
+                pips.get_product_inventory_data(product_id)
+                pips.write_to_file("inventory.csv", idx)
+            else:
+                Global.write_to_log_file("error.log", "Product ID " + str(product_id) + " is None for " + product_url)
 
-            pips.write_to_file("inventory.csv", idx)
-
-            Global.write_to_log_file(product_category + ".log", "Inventory and data for product " + str(idx) + " processed")
+            Global.write_to_log_file(description + ".log", "Inventory and data for product " + str(idx) + " processed")
 
         # Get end time
         end_time = datetime.now()
-        Global.write_to_log_file("main.log", "Product and Inventory data for " + description + " complete @ " +
+        Global.write_to_log_file(description + ".log", "Product and Inventory data for " + description + " complete @ " +
                                  end_time.strftime("%d/%m/%Y %H:%M:%S"))
 
     # We'll need this or else you'll have zombie processes
