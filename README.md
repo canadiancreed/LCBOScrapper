@@ -1,11 +1,9 @@
 # LCBOScrapper
 Scrapes data off of the LCBO website for future processing
 
-Notes:
+Version 1.0.0 - Initial release - latest release June 30th, 2020
+- Able to successfully pull data and store into csv files for each category
+- Has performance issues for larger scrapes, some taking over eight hours to complete
 
-LCBO Categories.csv
-The following categories are removed due to having ovver 100 pages. These should probably be in their own processor
-- WINE,wine-14
-- RED,red-wine-14001
-- WHITE,white-wine-14002
-- SPIRITS,spirits-15
+Version 2.0.x - Current release (Beta)
+- Removing Seleniumn from rendering inventory pages to address possible performance issues.
