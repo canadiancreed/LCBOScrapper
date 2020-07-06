@@ -56,7 +56,14 @@ class Application:
             # Put this code in as we're getting errors that product_id is None
             if product_id:
                 pips.get_product_inventory_data(product_id)
-                pips.write_to_file("inventory.csv", idx)
+
+                if len(pips.current_product_inventory_data) > 0:
+                    pips.write_to_file("inventory.csv", idx)
+                else:
+                    print("No inventory data for product ID " + product_id)
+
+                # Not clearing this will cause a massive list to form.
+                pips.clear_current_data_lists()
             else:
                 Global.write_to_log_file("error.log", "Product ID " + str(product_id) + " is None for " + product_url)
 
